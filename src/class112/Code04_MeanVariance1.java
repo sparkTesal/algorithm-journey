@@ -1,17 +1,17 @@
-package class110;
+package class112;
 
-// 方差
+// 平均数和方差
 // 给定一个长度为n的数组arr，进行m次操作，操作分为三种类型
 // 操作1 : arr数组中[l, r]范围上每个数字加上k，k为double类型
 // 操作2 : 查询arr数组中[l, r]范围上所有数字的平均数，返回double类型
 // 操作3 : 查询arr数组中[l, r]范围上所有数字的方差，返回double类型
 // 测试链接 : https://www.luogu.com.cn/problem/P1471
 // 如下实现是正确的，但是洛谷平台对空间卡的很严，只有使用C++能全部通过
-// java的版本就是无法完全通过的，空间会超过限制，主要是IO空间占用大
+// C++版本就是本节代码中的Code04_MeanVariance2文件
+// C++版本和java版本逻辑完全一样，但只有C++版本可以通过所有测试用例
+// java的版本就是无法完全通过，空间会超过限制，主要是IO空间占用大
 // 这是洛谷平台没有照顾各种语言的实现所导致的
 // 在真正笔试、比赛时，一定是兼顾各种语言的，该实现是一定正确的
-// C++版本就是Code04_Variance2文件
-// C++版本和java版本逻辑完全一样，但只有C++版本可以通过所有测试用例
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.util.StringTokenizer;
 
-public class Code04_Variance1 {
+public class Code04_MeanVariance1 {
 
 	public static int MAXN = 100001;
 
@@ -78,17 +78,17 @@ public class Code04_Variance1 {
 			sum2[rt] += sum1[rt] * jobv * 2 + jobv * jobv * (r - l + 1);
 			lazy1[rt] += jobv;
 			sum1[rt] += jobv * (r - l + 1);
-			return;
+		} else {
+			int mid = (l + r) >> 1;
+			down(rt, mid - l + 1, r - mid);
+			if (jobl <= mid) {
+				add(jobl, jobr, jobv, l, mid, rt << 1);
+			}
+			if (jobr > mid) {
+				add(jobl, jobr, jobv, mid + 1, r, rt << 1 | 1);
+			}
+			up(rt);
 		}
-		int mid = (l + r) >> 1;
-		down(rt, mid - l + 1, r - mid);
-		if (jobl <= mid) {
-			add(jobl, jobr, jobv, l, mid, rt << 1);
-		}
-		if (jobr > mid) {
-			add(jobl, jobr, jobv, mid + 1, r, rt << 1 | 1);
-		}
-		up(rt);
 	}
 
 	public static double query(double[] sum, int jobl, int jobr, int l, int r, int rt) {
@@ -190,7 +190,7 @@ public class Code04_Variance1 {
 	}
 
 	/*
-读取8个double类型的数字输入如下：
+读取8个double类型的数字输入如下
 8
 -2.7566713364794850E+0000
 2.1308819339610636E+0000

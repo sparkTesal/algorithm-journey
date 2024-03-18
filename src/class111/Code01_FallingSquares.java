@@ -1,4 +1,4 @@
-package class110;
+package class111;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.List;
 // 俄罗斯方块游戏和本题意思一样
 // 返回一个整数数组ans ，其中ans[i]表示在第i块方块掉落后整体的最大高度
 // 测试链接 : https://leetcode.cn/problems/falling-squares/
-public class Code03_FallingSquares {
+public class Code01_FallingSquares {
 
 	public static int MAXN = 2001;
 
@@ -106,17 +106,17 @@ public class Code03_FallingSquares {
 			update[rt] = true;
 			change[rt] = jobv;
 			max[rt] = jobv;
-			return;
+		} else {
+			int mid = (l + r) >> 1;
+			down(rt);
+			if (jobl <= mid) {
+				update(jobl, jobr, jobv, l, mid, rt << 1);
+			}
+			if (jobr > mid) {
+				update(jobl, jobr, jobv, mid + 1, r, rt << 1 | 1);
+			}
+			up(rt);
 		}
-		int mid = (l + r) >> 1;
-		down(rt);
-		if (jobl <= mid) {
-			update(jobl, jobr, jobv, l, mid, rt << 1);
-		}
-		if (jobr > mid) {
-			update(jobl, jobr, jobv, mid + 1, r, rt << 1 | 1);
-		}
-		up(rt);
 	}
 
 	public static int query(int jobl, int jobr, int l, int r, int rt) {

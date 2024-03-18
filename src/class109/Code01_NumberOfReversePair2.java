@@ -1,10 +1,13 @@
 package class109;
 
-// 升序三元组数量
-// 给定一个数组arr，如果i < j < k且arr[i] < arr[j] < arr[k]
-// 那么称(i, j, k)为一个升序三元组
-// 返回arr中升序三元组的数量
-// 测试链接 : https://www.luogu.com.cn/problem/P1637
+// 逆序对数量(值域树状数组)
+// 给定一个长度为n的数组arr
+// 如果 i < j 且 arr[i] > arr[j]
+// 那么(i,j)就是一个逆序对
+// 求arr中逆序对的数量
+// 1 <= n <= 5 * 10^5
+// 1 <= arr[i] <= 10^9
+// 测试链接 : https://www.luogu.com.cn/problem/P1908
 // 请同学们务必参考如下代码中关于输入、输出的处理
 // 这是输入输出处理效率很高的写法
 // 提交以下的code，提交时请把类名改成"Main"，可以直接通过
@@ -17,21 +20,15 @@ import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.util.Arrays;
 
-public class Code02_IncreasingTriples {
+public class Code01_NumberOfReversePair2 {
 
-	public static int MAXN = 30001;
+	public static int MAXN = 500001;
 
 	public static int[] arr = new int[MAXN];
 
 	public static int[] sort = new int[MAXN];
 
-	// 维护信息 : 课上讲的up1数组
-	// tree1不是up1数组，是up1数组的树状数组
-	public static long[] tree1 = new long[MAXN];
-
-	// 维护信息 : 课上讲的up2数组
-	// tree2不是up2数组，是up2数组的树状数组
-	public static long[] tree2 = new long[MAXN];
+	public static int[] tree = new int[MAXN];
 
 	public static int n, m;
 
@@ -39,14 +36,15 @@ public class Code02_IncreasingTriples {
 		return i & -i;
 	}
 
-	public static void add(long[] tree, int i, long c) {
+	public static void add(int i, int v) {
 		while (i <= m) {
-			tree[i] += c;
+			tree[i] += v;
 			i += lowbit(i);
 		}
 	}
 
-	public static long sum(long[] tree, int i) {
+	// 1~i范围的累加和
+	public static long sum(int i) {
 		long ans = 0;
 		while (i > 0) {
 			ans += tree[i];
@@ -72,7 +70,6 @@ public class Code02_IncreasingTriples {
 		br.close();
 	}
 
-	// 时间复杂度O(n * logn)
 	public static long compute() {
 		Arrays.sort(sort, 1, n + 1);
 		m = 1;
@@ -85,17 +82,17 @@ public class Code02_IncreasingTriples {
 			arr[i] = rank(arr[i]);
 		}
 		long ans = 0;
-		for (int i = 1; i <= n; i++) {
-			// 查询以当前值做结尾的升序三元组数量
-			ans += sum(tree2, arr[i] - 1);
-			// 更新以当前值做结尾的升序一元组数量
-			add(tree1, arr[i], 1);
-			// 更新以当前值做结尾的升序二元组数量
-			add(tree2, arr[i], sum(tree1, arr[i] - 1));
+		for (int i = n; i >= 1; i--) {
+			// 右边有多少数字是 <= 当前数值 - 1
+			ans += sum(arr[i] - 1);
+			// 增加当前数字的词频
+			add(arr[i], 1);
 		}
 		return ans;
 	}
 
+	// 给定原始值v
+	// 返回排名值(排序部分1~m中的下标)
 	public static int rank(int v) {
 		int l = 1, r = m, mid;
 		int ans = 0;

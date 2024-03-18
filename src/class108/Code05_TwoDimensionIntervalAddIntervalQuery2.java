@@ -10,7 +10,7 @@ package class108;
 //
 //const int MAXN = 2050;
 //const int MAXM = 2050;
-//int tree1[MAXN][MAXM], tree2[MAXN][MAXM], tree3[MAXN][MAXM], tree4[MAXN][MAXM];
+//int info1[MAXN][MAXM], info2[MAXN][MAXM], info3[MAXN][MAXM], info4[MAXN][MAXM];
 //int n, m;
 //
 //int lowbit(int i) {
@@ -18,12 +18,16 @@ package class108;
 //}
 //
 //void add(int x, int y, int v) {
+//    int v1 = v;
+//    int v2 = x * v;
+//    int v3 = y * v;
+//    int v4 = x * y * v;
 //    for (int i = x; i <= n; i += lowbit(i)) {
 //        for (int j = y; j <= m; j += lowbit(j)) {
-//            tree1[i][j] += v;
-//            tree2[i][j] += x * v;
-//            tree3[i][j] += y * v;
-//            tree4[i][j] += x * y * v;
+//            info1[i][j] += v1;
+//            info2[i][j] += v2;
+//            info3[i][j] += v3;
+//            info4[i][j] += v4;
 //        }
 //    }
 //}
@@ -32,7 +36,7 @@ package class108;
 //    int ans = 0;
 //    for (int i = x; i > 0; i -= lowbit(i)) {
 //        for (int j = y; j > 0; j -= lowbit(j)) {
-//            ans += (x + 1) * (y + 1) * tree1[i][j] - (y + 1) * tree2[i][j] - (x + 1) * tree3[i][j] + tree4[i][j];
+//            ans += (x + 1) * (y + 1) * info1[i][j] - (y + 1) * info2[i][j] - (x + 1) * info3[i][j] + info4[i][j];
 //        }
 //    }
 //    return ans;
