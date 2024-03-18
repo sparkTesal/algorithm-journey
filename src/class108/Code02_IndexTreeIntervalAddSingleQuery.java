@@ -1,7 +1,6 @@
 package class108;
 
 // 树状数组范围增加、单点查询模版
-// 用于可差分的信息，本题以累加和举例
 // 测试链接 : https://www.luogu.com.cn/problem/P3368
 // 请同学们务必参考如下代码中关于输入、输出的处理
 // 这是输入输出处理效率很高的写法
@@ -18,8 +17,8 @@ public class Code02_IndexTreeIntervalAddSingleQuery {
 
 	public static int MAXN = 500002;
 
-	// 树状数组的范围一定从1下标开始，不从0下标开始！
-	// tree维持差分数组前缀和信息
+	// 树状数组不维护原数组的信息，维护原数组的差分信息
+	// 注意下标一定从1开始，不从0开始
 	public static int[] tree = new int[MAXN];
 
 	public static int n, m;
@@ -49,33 +48,29 @@ public class Code02_IndexTreeIntervalAddSingleQuery {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StreamTokenizer in = new StreamTokenizer(br);
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-		while (in.nextToken() != StreamTokenizer.TT_EOF) {
-			n = (int) in.nval;
+		in.nextToken();
+		n = (int) in.nval;
+		in.nextToken();
+		m = (int) in.nval;
+		for (int i = 1, v; i <= n; i++) {
 			in.nextToken();
-			m = (int) in.nval;
-			for (int i = 1, v; i <= n; i++) {
+			v = (int) in.nval;
+			add(i, v);
+			add(i + 1, -v);
+		}
+		for (int i = 1; i <= m; i++) {
+			in.nextToken();
+			int op = (int) in.nval;
+			if (op == 1) {
+				in.nextToken(); int l = (int) in.nval;
+				in.nextToken(); int r = (int) in.nval;
+				in.nextToken(); int v = (int) in.nval;
+				add(l, v);
+				add(r + 1, -v);
+			} else {
 				in.nextToken();
-				v = (int) in.nval;
-				add(i, v);
-				add(i + 1, -v);
-			}
-			for (int i = 1, a, b, c, d; i <= m; i++) {
-				in.nextToken();
-				a = (int) in.nval;
-				if (a == 1) {
-					in.nextToken();
-					b = (int) in.nval;
-					in.nextToken();
-					c = (int) in.nval;
-					in.nextToken();
-					d = (int) in.nval;
-					add(b, d);
-					add(c + 1, -d);
-				} else {
-					in.nextToken();
-					b = (int) in.nval;
-					out.println(sum(b));
-				}
+				int index = (int) in.nval;
+				out.println(sum(index));
 			}
 		}
 		out.flush();

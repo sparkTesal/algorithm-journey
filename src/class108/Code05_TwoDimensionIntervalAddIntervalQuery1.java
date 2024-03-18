@@ -6,7 +6,7 @@ package class108;
 // java的版本就是无法完全通过的，空间会超过限制，主要是IO空间占用大
 // 这是洛谷平台没有照顾各种语言的实现所导致的
 // 在真正笔试、比赛时，一定是兼顾各种语言的，该实现是一定正确的
-// C++版本就是Code04_IndexTreeTwoDimensionalArray2文件
+// C++版本就是Code05_TwoDimensionIntervalAddIntervalQuery2文件
 // C++版本和java版本逻辑完全一样，但只有C++版本可以通过所有测试用例
 
 import java.io.BufferedReader;
@@ -16,19 +16,23 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 
-public class Code04_IndexTreeTwoDimensionalArray1 {
+public class Code05_TwoDimensionIntervalAddIntervalQuery1 {
 
 	public static int MAXN = 2050;
 
 	public static int MAXM = 2050;
 
-	public static int[][] tree1 = new int[MAXN][MAXM];
+	// 维护信息 : d[i][j]
+	public static int[][] info1 = new int[MAXN][MAXM];
 
-	public static int[][] tree2 = new int[MAXN][MAXM];
+	// 维护信息 : d[i][j] * i
+	public static int[][] info2 = new int[MAXN][MAXM];
 
-	public static int[][] tree3 = new int[MAXN][MAXM];
+	// 维护信息 : d[i][j] * j
+	public static int[][] info3 = new int[MAXN][MAXM];
 
-	public static int[][] tree4 = new int[MAXN][MAXM];
+	// 维护信息 : d[i][j] * i * j
+	public static int[][] info4 = new int[MAXN][MAXM];
 
 	public static int n, m;
 
@@ -37,21 +41,26 @@ public class Code04_IndexTreeTwoDimensionalArray1 {
 	}
 
 	public static void add(int x, int y, int v) {
+		int v1 = v;
+		int v2 = x * v;
+		int v3 = y * v;
+		int v4 = x * y * v;
 		for (int i = x; i <= n; i += lowbit(i)) {
 			for (int j = y; j <= m; j += lowbit(j)) {
-				tree1[i][j] += v;
-				tree2[i][j] += x * v;
-				tree3[i][j] += y * v;
-				tree4[i][j] += x * y * v;
+				info1[i][j] += v1;
+				info2[i][j] += v2;
+				info3[i][j] += v3;
+				info4[i][j] += v4;
 			}
 		}
 	}
 
+	// 以(1,1)左上角，以(x,y)右下角
 	public static int sum(int x, int y) {
 		int ans = 0;
 		for (int i = x; i > 0; i -= lowbit(i)) {
 			for (int j = y; j > 0; j -= lowbit(j)) {
-				ans += (x + 1) * (y + 1) * tree1[i][j] - (y + 1) * tree2[i][j] - (x + 1) * tree3[i][j] + tree4[i][j];
+				ans += (x + 1) * (y + 1) * info1[i][j] - (y + 1) * info2[i][j] - (x + 1) * info3[i][j] + info4[i][j];
 			}
 		}
 		return ans;

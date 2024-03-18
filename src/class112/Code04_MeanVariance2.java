@@ -1,6 +1,6 @@
-package class110;
+package class112;
 
-// 方差
+// 平均数和方差
 // 给定一个长度为n的数组arr，进行m次操作，操作分为三种类型
 // 操作1 : arr数组中[l, r]范围上每个数字加上k，k为double类型
 // 操作2 : 查询arr数组中[l, r]范围上所有数字的平均数，返回double类型
@@ -59,13 +59,13 @@ package class110;
 //        sum2[rt] += sum1[rt] * jobv * 2 + jobv * jobv * (r - l + 1);
 //        lazy1[rt] += jobv;
 //        sum1[rt] += jobv * (r - l + 1);
-//        return;
-//    }
-//    int mid = (l + r) >> 1;
-//    down(rt, mid - l + 1, r - mid);
-//    if (jobl <= mid) add(jobl, jobr, jobv, l, mid, rt << 1);
-//    if (jobr > mid) add(jobl, jobr, jobv, mid + 1, r, rt << 1 | 1);
-//    up(rt);
+//    } else {
+//        int mid = (l + r) >> 1;
+//        down(rt, mid - l + 1, r - mid);
+//        if (jobl <= mid) add(jobl, jobr, jobv, l, mid, rt << 1);
+//        if (jobr > mid) add(jobl, jobr, jobv, mid + 1, r, rt << 1 | 1);
+//        up(rt);
+//   }
 //}
 //
 //double query(double sum[], int jobl, int jobr, int l, int r, int rt) {
